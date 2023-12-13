@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang = "en">
+        <head>
+                <meta charset = "UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Sensors and actuators</title>
+                <script src="https://cdn.pubnub.com/sdk/javascript/pubnub.7.4.3.js"></script>
+                <script = src="static/js/main.js"></script>
+        </head>
+        <body onload="keepAlive(); time(); setupPubNub();">
+                <main>
+                        <h1>Sensors</h1>
+                        <h3>Connection: <span id="connection_id">...</span></h3>
+                        <h3>Motion: <span id="motion_id">...</span></h3>
+                        <input type="checkbox" id="buzzer" onclick="handleClick(this);"/>
+                        <label for="buzzer">Buzzer On</label>
+			<button onClick=logout() style="position:absolute;top:0;right:0;">Logout</button>
+                </main>
+		<div>
+			{% if user_id == '115286914554441662160'%}
+			<h2> Logged in users </h2>
+			<ul>
+				{% for user in online_users["users"] %}
+				<li>
+					<span>{{user[0]}}</span>
+					<input type="checkbox" id="read-user-{{user[1]}}" {{user[2]}}>Read</input>
+					<input type="checkbox" id="write-user-{{user[1]}}"{{user[3]}}>Write</input>
+					<button id="access-user-{{user[1]}}" onClick = grantAccess(this)>Apply</button>
+				</li>
+				{% endfor %}
+			</ul>
+			<h2> Sensors </h2>
+			<input type="text" id="sensoruuid" placeholder="Sensor UUID" autofocus></input>
+			<input type = "checkbox" id="read-device">Read</input>
+			<input type = "checkbox" id="write-device">Write</input>
+			<button id = "access-device" onClick=grantDeviceAccess(this)>Apply</button>
+			{% endif %}
+		</div>
+        </body>
+</html>
