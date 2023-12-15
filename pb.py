@@ -8,8 +8,8 @@ cipher_key = config.get("pb_cipher_key")
 
 pn_config = PNConfiguration()
 pn_config.publish_key = config.get("pb_publish_key")
-pn_config.subscribe_key = config.get("pb_subecribe_key")
-pn_config.uuid = config.get("admin_gogle_id")
+pn_config.subscribe_key = config.get("pb_subscribe_key")
+pn_config.uuid = config.get("admin_google_id")
 pn_config.secret_key = config.get("pb_secret_key")
 #pn_config.cipher_key = cipher_key
 pubnub = PubNub(pn_config)
@@ -17,7 +17,7 @@ pubnub = PubNub(pn_config)
 
 def grant_read_access(user_id):
     channels = [
-            Channel.id(config.get("pb_channel").read()
+            Channel.id(config.get("pb_channel")).read()
             ]
     uuids = [
             UUID.id("uuid-d").get().update()
@@ -28,7 +28,7 @@ def grant_read_access(user_id):
 
 def grant_read_write_access(user_id):
     channels = [
-            Channel.id(config.get("pb_channel").read().write()
+            Channel.id(config.get("pb_channel")).read().write()
             ]
     uuids = [
             UUID.id("uuid-d").get().update()
@@ -44,4 +44,7 @@ def revoke_acess(token):
 def parse_token(token):
     token_details = pubnub.parse_token(token)
     print(token_details)
-    return token_details['timestamp'], token_details['ttl']
+    read_access = token_details['resources']['channels']['johns_sd3a_pi']['read']
+    write_access = token_details['resources']['channels']['johns_sd3a_pi']['write']
+    uuid = token_details['authorized_uuid']
+    return token_details['timestamp'], token_details['ttl'], uuid, read_access, write_access
